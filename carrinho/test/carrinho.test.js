@@ -63,4 +63,17 @@ describe('Test the carrinho methods.', () => {
       total: 50,
     });
   });
+
+  it('Should return the subtotal.', () => {
+    const item1 = new Item('Banana', 2, 5);
+    const item2 = new Item('Mel', 3, 10);
+
+    const carrinho = new Carrinho();
+    carrinho.adiciona(item1);
+    carrinho.adiciona(item2);
+    carrinho.adicionaFrete(10);
+
+    const total = carrinho.calculaTotal();
+    expect(total).toEqual(50);
+  });
 });
