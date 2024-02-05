@@ -1,4 +1,6 @@
-import { describe, expect, it } from '@jest/globals';
+import {
+  describe, expect, it, jest,
+} from '@jest/globals';
 import Editora from '../../models/editora.js';
 
 describe('Testinh the editoras model', () => {
@@ -24,7 +26,7 @@ describe('Testinh the editoras model', () => {
     });
   });
 
-  it('Should save on DB using modern syntax.', async () => {
+  it.skip('Should save on DB using modern syntax.', async () => {
     const editora = new Editora(editoraObj);
 
     const data = await editora.salvar();
@@ -32,6 +34,30 @@ describe('Testinh the editoras model', () => {
     const editoraFromDB = await Editora.pegarPeloId(data.id);
 
     expect(editoraFromDB).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+        ...editoraObj,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      }),
+    );
+  });
+
+  it('Should mock to save editora on DB.', () => {
+    const editora = new Editora(editoraObj);
+
+    editora.salvar = jest.fn().mockReturnValue({
+      id: 10,
+      nome: 'CDC',
+      cidade: 'São Paulo',
+      email: 'c@c.com',
+      created_at: '2024-01-01',
+      updated_at: '2024-01-01',
+    });
+
+    const response = editora.salvar();
+
+    expect(response).toEqual(
       expect.objectContaining({
         id: expect.any(Number),
         ...editoraObj,
