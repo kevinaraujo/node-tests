@@ -38,13 +38,12 @@ describe('POST in /editoras.', () => {
       .expect(201);
     idResponse = res.body.content.id;
   });
-});
 
-describe('DELETE in /editoras', () => {
-  it('Should delete the recorded added', async () => {
+  it('Should not insert data when passing empty body.', async () => {
     await request(app)
-      .delete(`/editoras/${idResponse}`)
-      .expect(200);
+      .post('/editoras')
+      .send({})
+      .expect(400);
   });
 });
 
@@ -52,6 +51,23 @@ describe('GET in /editoras/id', () => {
   it('Should return the especific resource by id', async () => {
     await request(app)
       .get(`/editoras/${idResponse}`)
+      .expect(200);
+  });
+});
+
+describe('PUT in /editoras/id', () => {
+  it('Should update the nome field', async () => {
+    await request(app)
+      .put(`/editoras/${idResponse}`)
+      .send({ nome: 'Casa do cod' })
+      .expect(204);
+  });
+});
+
+describe('DELETE in /editoras', () => {
+  it('Should delete the recorded added', async () => {
+    await request(app)
+      .delete(`/editoras/${idResponse}`)
       .expect(200);
   });
 });
