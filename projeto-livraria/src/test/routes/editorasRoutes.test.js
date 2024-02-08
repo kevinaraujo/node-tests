@@ -56,10 +56,14 @@ describe('GET in /editoras/id', () => {
 });
 
 describe('PUT in /editoras/id', () => {
-  it('Should update the nome field', async () => {
+  it.each([
+    ['nome', { nome: 'Casa do cod' }],
+    ['cidade', { cidade: 'SP' }],
+    ['email', { email: 'cdc@cdc.com' }],
+  ])('Should update the %s field', async (key, param) => {
     await request(app)
       .put(`/editoras/${idResponse}`)
-      .send({ nome: 'Casa do cod' })
+      .send(param)
       .expect(204);
   });
 });
